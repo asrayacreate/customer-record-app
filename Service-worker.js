@@ -1,16 +1,15 @@
-self.addEventListener('install', function(event) {
+self.addEventListener("install", function(event) {
   event.waitUntil(
-    caches.open('app-cache').then(function(cache) {
+    caches.open("crm-cache").then(function(cache) {
       return cache.addAll([
-        '/',
-        '/customer-record-app/',
-        '/customer-record-app/index.html'
+        "/customer-record-app/",
+        "/customer-record-app/index.html"
       ]);
     })
   );
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener("fetch", function(event) {
   event.respondWith(
     caches.match(event.request).then(function(response) {
       return response || fetch(event.request);
