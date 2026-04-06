@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customer Record App</title>
+</head>
+<body>
+
+<h2>Customer Record</h2>
+
+<input type="text" id="name" placeholder="Customer Name">
+<input type="text" id="phone" placeholder="Phone Number">
+<button onclick="addCustomer()">Add</button>
+
+<ul id="list"></ul>
+
+<script>
+function addCustomer() {
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+
+  let li = document.createElement("li");
+  li.innerText = name + " - " + phone;
+
+  document.getElementById("list").appendChild(li);
+}
+</script>
+
+</body>
+</html>
