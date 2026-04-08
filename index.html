@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="ne">
 <head>
   <meta charset="UTF-8">
@@ -693,6 +693,547 @@ You sent
       }
       if (name === "rates") {
         buttons[2].classList.add("active");
+        document.getElementById("pageTitle").textContent = "Rate List";
+      }
+    }
+
+    function renderAll() {
+      renderDashboard();
+      renderCustomers();
+      renderRates();
+    }
+
+    window.onload = function () {
+      renderAll();
+    };
+  </script>
+</body>
+</html>
+You sent
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prerak Multipurpose CRM</title>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:#111827;
+      color:#fff;
+    }
+    .app{
+      display:flex;
+      min-height:100vh;
+    }
+    .sidebar{
+      width:250px;
+      background:#0f172a;
+      padding:20px 16px;
+      border-right:1px solid rgba(255,255,255,.08);
+    }
+    .brand{
+      font-size:26px;
+      font-weight:700;
+      color:#facc15;
+      margin-bottom:4px;
+    }
+    .subbrand{
+      font-size:13px;
+      color:#cbd5e1;
+      margin-bottom:28px;
+    }
+    .menu button{
+      width:100%;
+      text-align:left;
+      padding:14px 16px;
+      margin-bottom:10px;
+      border:none;
+      border-radius:12px;
+      background:#1f2937;
+      color:#fff;
+      cursor:pointer;
+      font-size:15px;
+    }
+    .menu button.active{
+      background:#374151;
+      border-left:4px solid #facc15;
+    }
+    .main{
+      flex:1;
+      padding:22px;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+    .topbar h1{
+      margin:0;
+      font-size:30px;
+    }
+    .topbar p{
+      margin:4px 0 0;
+      color:#cbd5e1;
+    }
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .top-actions button{
+      padding:12px 16px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .yellow-btn{background:#facc15;color:#111827}
+    .dark-btn{background:#1f2937;color:#fff}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .card{
+      background:#1f2937;
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 4px 14px rgba(0,0,0,.15);
+    }
+    .stat-title{
+      color:#cbd5e1;
+      font-size:14px;
+      margin-bottom:8px;
+    }
+    .stat-value{
+      font-size:34px;
+      font-weight:700;
+    }
+    .big-grid{
+      display:grid;
+      grid-template-columns:1.2fr 1fr;
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .section-title{
+      font-size:22px;
+      margin:0 0 14px;
+    }
+    .table{
+      width:100%;
+      border-collapse:collapse;
+    }
+    .table th,.table td{
+      padding:12px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      text-align:left;
+      font-size:14px;
+    }
+    .table th{color:#cbd5e1}
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      margin-top:6px;
+    }
+    .badge-new{background:#0ea5e9;color:#fff}
+    .badge-pending{background:#a855f7;color:#fff}
+    .badge-work{background:#f97316;color:#fff}
+    .badge-done{background:#22c55e;color:#fff}
+    .badge-other{background:#64748b;color:#fff}
+    .form-box{
+      display:none;
+      margin-top:18px;
+    }
+    .form-box.active{
+      display:block;
+    }
+    input, select{
+      width:100%;
+      padding:11px 12px;
+      border-radius:10px;
+      border:1px solid #374151;
+      background:#111827;
+      color:#fff;
+      margin-bottom:10px;
+    }
+    .two-col{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .full-btn{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      background:#facc15;
+      color:#111827;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .list-card{
+      background:#111827;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      padding:12px;
+      margin-bottom:10px;
+    }
+    .muted{color:#cbd5e1}
+    .danger-btn{
+      background:#dc2626;
+      color:#fff;
+      border:none;
+      padding:8px 10px;
+      border-radius:8px;
+      cursor:pointer;
+      margin-top:8px;
+    }
+    @media(max-width:900px){
+      .app{display:block}
+      .sidebar{width:100%}
+      .grid,.big-grid,.two-col{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">Prerak Multipurpose</div>
+      <div class="subbrand">CRM COMMAND CENTER</div>
+
+      <div class="menu">
+        <button id="menu-dashboard" class="active" onclick="showSection('dashboard')">Dashboard</button>
+        <button id="menu-customers" onclick="showSection('customers')">Customers</button>
+        <button id="menu-rates" onclick="showSection('rates')">Rate List</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p>Prerak Multipurpose CRM</p>
+        </div>
+        <div class="top-actions">
+          <button class="yellow-btn" onclick="toggleForm('customerFormWrap')">+ New Customer</button>
+          <button class="dark-btn" onclick="toggleForm('itemFormWrap')">+ New Item</button>
+        </div>
+      </div>
+
+      <section id="dashboardSection">
+        <div class="grid">
+          <div class="card">
+            <div class="stat-title">Customers</div>
+            <div class="stat-value" id="customerCount">0</div>
+          </div>
+          <div class="card">
+            <div class="stat-title">Items / Services</div>
+            <div class="stat-value" id="itemCount">0</div>
+          </div>
+          <div class="card">
+            <div class="stat-title">Follow-up Pending</div>
+            <div class="stat-value" id="pendingCount">0</div>
+          </div>
+        </div>
+
+        <div class="big-grid">
+          <div class="card">
+            <h3 class="section-title">Recent Customers</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Service</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recentCustomers"></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3 class="section-title">Service Categories</h3>
+            <div id="serviceSummary" class="muted">No data yet.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="customersSection" style="display:none;">
+        <div class="card">
+          <h3 class="section-title">All Customers</h3>
+          <div id="customerCards"></div>
+        </div>
+      </section>
+
+      <section id="ratesSection" style="display:none;">
+        <div class="card">
+          <h3 class="section-title">Rate List</h3>
+          <div id="rateCards"></div>
+        </div>
+      </section>
+
+      <div id="customerFormWrap" class="form-box">
+        <div class="card">
+          <h3 class="section-title">New Customer</h3>
+          <input id="name" placeholder="Customer Name">
+          <div class="two-col">
+            <input id="phone" placeholder="Phone">
+            <input id="alt" placeholder="Alternate Phone">
+          </div>
+          <input id="address" placeholder="Address">
+          <div class="two-col">
+            <input id="product" placeholder="Service / Product">
+            <input id="location" placeholder="Project Location">
+          </div>
+          <div class="two-col">
+            <input id="date" placeholder="Date / मिति">
+            <select id="status">
+              <option>New</option>
+              <option>Follow-up Pending</option>
+              <option>Interested</option>
+              <option>Quotation Sent</option>
+              <option>Order Confirmed</option>
+              <option>Working</option>
+              <option>Ready</option>
+              <option>Completed</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
+          <input id="remarks" placeholder="Remarks">
+          <button class="full-btn" onclick="addCustomer()">Save Customer</button>
+        </div>
+      </div>
+
+      <div id="itemFormWrap" class="form-box">
+        <div class="card">
+          <h3 class="section-title">New Item / Rate</h3>
+          <input id="itemName" placeholder="Item Name">
+          <div class="two-col">
+            <input id="itemRate" placeholder="Rate">
+            <input id="itemStock" placeholder="Stock Quantity">
+          </div>
+          <button class="full-btn" onclick="addItem()">Add Item</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function getCustomers() {
+      return JSON.parse(localStorage.getItem("crm")) || [];
+    }
+
+    function getItems() {
+      return JSON.parse(localStorage.getItem("items")) || [];
+    }
+
+    function saveCustomers(data) {
+      localStorage.setItem("crm", JSON.stringify(data));
+    }
+
+    function saveItems(data) {
+      localStorage.setItem("items", JSON.stringify(data));
+    }
+
+    function statusBadge(status) {
+      if (status === "New") return '<span class="badge badge-new">New</span>';
+      if (status === "Follow-up Pending") return '<span class="badge badge-pending">Follow-up Pending</span>';
+      if (status === "Working") return '<span class="badge badge-work">Working</span>';
+      if (status === "Completed" || status === "Ready") return '<span class="badge badge-done">' + status + '</span>';
+      return '<span class="badge badge-other">' + status + '</span>';
+    }
+
+    function renderDashboard() {
+      const customers = getCustomers();
+      const items = getItems();
+
+      document.getElementById("customerCount").textContent = customers.length;
+      document.getElementById("itemCount").textContent = items.length;
+      document.getElementById("pendingCount").textContent =
+        customers.filter(c => c.status === "Follow-up Pending").length;
+
+      let recentHtml = "";
+      customers.slice().reverse().slice(0, 5).forEach(c => {
+        recentHtml += `
+          <tr>
+            <td>${c.name || "-"}</td>
+            <td>${c.phone || "-"}</td>
+            <td>${c.product || "-"}</td>
+            <td>${statusBadge(c.status || "New")}</td>
+          </tr>
+        `;
+      });
+      document.getElementById("recentCustomers").innerHTML =
+        recentHtml || <tr><td colspan="4" class="muted">No customers yet.</td></tr>;
+
+      const serviceMap = {};
+      customers.forEach(c => {
+        const key = c.product || "Other";
+        serviceMap[key] = (serviceMap[key] || 0) + 1;
+      });
+
+      let serviceHtml = "";
+      const entries = Object.entries(serviceMap);
+      if (entries.length === 0) {
+        serviceHtml = "No services recorded yet.";
+      } else {
+        entries.forEach(([name, count]) => {
+          serviceHtml += <div class="list-card"><b>${name}</b><br><span class="muted">${count} customers</span></div>;
+        });
+      }
+      document.getElementById("serviceSummary").innerHTML = serviceHtml;
+    }
+
+    function renderCustomers() {
+      const customers = getCustomers();
+      let html = "";
+
+      customers.slice().reverse().forEach((c, index) => {
+        html += `
+          <div class="list-card">
+            <b>${c.name || "-"}</b><br>
+            📞 ${c.phone || "-"}<br>
+            📍 ${c.location || "-"}<br>
+            🧱 ${c.product || "-"}<br>
+            📅 ${c.date || "-"}<br>
+            ${statusBadge(c.status || "New")}<br>
+            <span class="muted">${c.remarks || "-"}</span><br>
+            <button class="danger-btn" onclick="deleteCustomer(${customers.length - 1 - index})">Delete</button>
+          </div>
+        `;
+      });
+
+      document.getElementById("customerCards").innerHTML = html || '<div class="muted">No customer data.</div>';
+    }
+
+    function renderRates() {
+      const items = getItems();
+      let html = "";
+
+      items.slice().reverse().forEach((item, index) => {
+        html += `
+          <div class="list-card">
+            <b>${item.name || "-"}</b><br>
+            💰 Rate: Rs. ${item.rate || "-"}<br>
+            📦 Stock: ${item.stock || "-"}<br>
+            <button class="danger-btn" onclick="deleteItem(${items.length - 1 - index})">Delete</button>
+          </div>
+        `;
+      });
+
+      document.getElementById("rateCards").innerHTML = html || '<div class="muted">No item data.</div>';
+    }
+
+    function addCustomer() {
+      const customers = getCustomers();
+
+      const customer = {
+        name: document.getElementById("name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        alt: document.getElementById("alt").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        product: document.getElementById("product").value.trim(),
+        location: document.getElementById("location").value.trim(),
+        date: document.getElementById("date").value.trim(),
+        status: document.getElementById("status").value,
+        remarks: document.getElementById("remarks").value.trim()
+      };
+
+      if (!customer.name || !customer.phone) {
+        alert("Customer Name र Phone चाहिन्छ");
+        return;
+      }
+
+      customers.push(customer);
+      saveCustomers(customers);
+
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+      document.getElementById("alt").value = "";
+      document.getElementById("address").value = "";
+      document.getElementById("product").value = "";
+      document.getElementById("location").value = "";
+      document.getElementById("date").value = "";
+      document.getElementById("remarks").value = "";
+      document.getElementById("status").selectedIndex = 0;
+
+      renderAll();
+      alert("Customer Saved");
+    }
+
+    function addItem() {
+      const items = getItems();
+
+      const item = {
+        name: document.getElementById("itemName").value.trim(),
+        rate: document.getElementById("itemRate").value.trim(),
+        stock: document.getElementById("itemStock").value.trim()
+      };
+
+      if (!item.name || !item.rate) {
+        alert("Item Name र Rate चाहिन्छ");
+        return;
+      }
+
+      items.push(item);
+      saveItems(items);
+
+      document.getElementById("itemName").value = "";
+      document.getElementById("itemRate").value = "";
+      document.getElementById("itemStock").value = "";
+
+      renderAll();
+      alert("Item Saved");
+    }
+
+    function deleteCustomer(index) {
+      const customers = getCustomers();
+      customers.splice(index, 1);
+      saveCustomers(customers);
+      renderAll();
+    }
+
+    function deleteItem(index) {
+      const items = getItems();
+      items.splice(index, 1);
+      saveItems(items);
+      renderAll();
+    }
+
+    function toggleForm(id) {
+      document.getElementById(id).classList.toggle("active");
+    }
+
+    function showSection(name) {
+      document.getElementById("dashboardSection").style.display = name === "dashboard" ? "block" : "none";
+      document.getElementById("customersSection").style.display = name === "customers" ? "block" : "none";
+      document.getElementById("ratesSection").style.display = name === "rates" ? "block" : "none";
+
+      document.getElementById("menu-dashboard").classList.remove("active");
+      document.getElementById("menu-customers").classList.remove("active");
+      document.getElementById("menu-rates").classList.remove("active");
+
+      if (name === "dashboard") {
+        document.getElementById("menu-dashboard").classList.add("active");
+        document.getElementById("pageTitle").textContent = "Dashboard";
+      }
+      if (name === "customers") {
+        document.getElementById("menu-customers").classList.add("active");
+        document.getElementById("pageTitle").textContent = "Customers";
+      }
+      if (name === "rates") {
+        document.getElementById("menu-rates").classList.add("active");
         document.getElementById("pageTitle").textContent = "Rate List";
       }
     }
