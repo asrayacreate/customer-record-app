@@ -178,6 +178,30 @@ function showRates(){
 }
 
 function addItem(){
+ function addItem(){
+let items = JSON.parse(localStorage.getItem("items")) || [];
+
+let name = document.getElementById("itemName").value;
+let rate = document.getElementById("itemRate").value;
+let stock = document.getElementById("itemStock").value;
+
+if(!name || !rate){
+alert("Item Name र Rate चाहिन्छ");
+return;
+}
+
+items.push({name, rate, stock});
+
+localStorage.setItem("items", JSON.stringify(items));
+
+alert("Item Saved Successfully");
+
+document.getElementById("itemName").value="";
+document.getElementById("itemRate").value="";
+document.getElementById("itemStock").value="";
+
+showRates();
+}
 let items = JSON.parse(localStorage.getItem("items")) || [];
 
 let item = {
