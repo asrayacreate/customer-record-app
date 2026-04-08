@@ -1,4 +1,60 @@
-DOCTYPE html>
+unction showRates(){
+
+let items = JSON.parse(localStorage.getItem("items")) || [];
+
+let html = "";
+
+items.forEach((item,i)=>{
+html += `
+<div class="card">
+<b>${item.name}</b><br>
+💰 Rs. ${item.rate}<br>
+📦 Stock: ${item.stock}
+</div>
+`;
+});
+
+document.getElementById("rateList").innerHTML = html;
+}
+You sent
+function addItem(){
+
+let items = JSON.parse(localStorage.getItem("items")) || [];
+
+let name = document.getElementById("itemName").value;
+let rate = document.getElementById("itemRate").value;
+let stock = document.getElementById("itemStock").value;
+
+if(!name || !rate){
+alert("Item Name र Rate चाहिन्छ");
+return;
+}
+
+items.push({
+name: name,
+rate: rate,
+stock: stock
+});
+
+localStorage.setItem("items", JSON.stringify(items));
+
+alert("Item Saved Successfully");
+
+document.getElementById("itemName").value="";
+document.getElementById("itemRate").value="";
+document.getElementById("itemStock").value="";
+
+showRates();
+}
+You sent
+window.onload = function(){
+showRates();
+}
+9:07 PM
+You sent
+<div id="rateList"></div>
+You sent
+<!DOCTYPE html>
 <html lang="ne">
 <head>
   <meta charset="UTF-8" />
@@ -307,7 +363,10 @@ DOCTYPE html>
   </script>
 </body>
 </html>
-
+You sent
+Prerak CRM
+asrayacreate.github.io
+You sent
 <script>
 
 function addItem(){
@@ -355,6 +414,7 @@ window.onload = function(){
 }
 
 </script>
+You sent
 <script>
 
 function addItem(){
@@ -402,7 +462,7 @@ window.onload = function(){
 }
 
 </script>
-
+You sent
 <!DOCTYPE html>
 <html lang="ne">
 <head>
@@ -626,5 +686,198 @@ window.onload = function(){
       showRates();
     };
   </script>
+</body>
+</html>
+10:10 PM
+You sent
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prerak CRM</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f4f6fb;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.card {
+  background: #f1f1f1;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🙏 श्री गणेशाय नम:</h2>
+
+<input id="name" placeholder="Customer Name">
+<input id="phone" placeholder="Phone">
+<input id="alt" placeholder="Alternate Phone">
+<input id="address" placeholder="Address">
+<input id="product" placeholder="Service / Product">
+<input id="location" placeholder="Project Location">
+<input id="date" placeholder="Date">
+
+<select id="status">
+  <option>New</option>
+  <option>Working</option>
+  <option>Ready</option>
+  <option>Completed</option>
+  <option>Cancelled</option>
+</select>
+
+<input id="remarks" placeholder="Remarks">
+
+<button onclick="addCustomer()">Save Customer</button>
+
+<h3>Customer List</h3>
+<div id="list"></div>
+
+<hr>
+
+<h3>Rate List</h3>
+
+<input id="itemName" placeholder="Item Name">
+<input id="itemRate" placeholder="Rate">
+<input id="itemStock" placeholder="Stock Quantity">
+
+<button onclick="addItem()">Add Item</button>
+
+<div id="rateList"></div>
+
+</div>
+
+<script>
+
+function addCustomer() {
+  let customers = JSON.parse(localStorage.getItem("crm")) || [];
+
+  let customer = {
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    alt: document.getElementById("alt").value,
+    address: document.getElementById("address").value,
+    product: document.getElementById("product").value,
+    location: document.getElementById("location").value,
+    date: document.getElementById("date").value,
+    status: document.getElementById("status").value,
+    remarks: document.getElementById("remarks").value
+  };
+
+  if (!customer.name || !customer.phone) {
+    alert("Name र Phone चाहिन्छ");
+    return;
+  }
+
+  customers.push(customer);
+  localStorage.setItem("crm", JSON.stringify(customers));
+
+  alert("Customer Saved");
+
+  showCustomers();
+}
+
+function showCustomers() {
+  const list = document.getElementById("list");
+  const customers = JSON.parse(localStorage.getItem("crm")) || [];
+
+  let html = "";
+
+  customers.forEach((c, i) => {
+    html += `
+      <div class="card">
+        <b>${i + 1}. ${c.name}</b><br>
+        📞 ${c.phone}<br>
+        📍 ${c.location || "-"}<br>
+        📅 ${c.date || "-"}<br>
+        📊 ${c.status}<br>
+        📝 ${c.remarks || "-"}
+      </div>
+    `;
+  });
+
+  list.innerHTML = html;
+}
+
+function addItem() {
+  let items = JSON.parse(localStorage.getItem("items")) || [];
+
+  let name = document.getElementById("itemName").value;
+  let rate = document.getElementById("itemRate").value;
+  let stock = document.getElementById("itemStock").value;
+
+  if (!name || !rate) {
+    alert("Item Name र Rate चाहिन्छ");
+    return;
+  }
+
+  items.push({ name, rate, stock });
+  localStorage.setItem("items", JSON.stringify(items));
+
+  alert("Item Saved");
+
+  showRates();
+}
+
+function showRates() {
+  const items = JSON.parse(localStorage.getItem("items")) || [];
+  const div = document.getElementById("rateList");
+
+  let html = "";
+
+  items.forEach(i => {
+    html += `
+      <div class="card">
+        <b>${i.name}</b><br>
+        Rs. ${i.rate}<br>
+        Stock: ${i.stock}
+      </div>
+    `;
+  });
+
+  div.innerHTML = html;
+}
+
+window.onload = function () {
+  showCustomers();
+  showRates();
+};
+
+</script>
+
 </body>
 </html>
