@@ -1,35 +1,256 @@
 <!DOCTYPE html>
-<html>
+<html lang="ne">
 <head>
-  <title>Customer Record App</title>
-  <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prerak CRM</title>
+
+<style>
+body {
+  font-family: Arial;
+  background:#f4f6fb;
+  padding:15px;
+}
+.container {
+  max-width:700px;
+  margin:auto;
+  background:white;
+  padding:15px;
+  border-radius:10px;
+}
+input, select, button {
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+button {
+  background:#1d3557;
+  color:white;
+  font-weight:bold;
+}
+.card {
+  border:1px solid #ddd;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+}
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  justify-content:center;
+  align-items:center;
+}
+.modal-box {
+  background:white;
+  padding:15px;
+  border-radius:10px;
+}
+</style>
 </head>
+
 <body>
 
-<h2>Customer CRM</h2>
+<div class="container">
 
-<input type="text" id="name" placeholder="Customer Name">
-<input type="text" id="phone" placeholder="Phone Number">
-<button onclick="addCustomer()">Add</button>
+<h2>Prerak CRM</h2>
 
-<ul id="list"></ul>
+<input id="name" placeholder="Customer Name">
+<input id="phone" placeholder="Phone Number">
+<input id="altPhone" placeholder="Alternate Phone">
+<input id="address" placeholder="Address">
+<input id="product" placeholder="Service / Product">
+<input id="location" placeholder="Project Location">
+
+<input id="date" placeholder="नेपाली मिति छान्नुहोस्" readonly onclick="openDatePicker()">
+
+<select id="status">
+<option>New</option>
+<option>Follow-up Pending</option>
+<option>Interested</option>
+<option>Quotation Sent</option>
+<option>Order Confirmed</option>
+<option>Working</option>
+<option>Ready for Delivery</option>
+<option>Completed</option>
+<option>Cancelled</option>
+</select>
+
+<textarea id="remarks" placeholder="Remarks / Notes"></textarea>
+
+<button onclick="addCustomer()">Add Customer</button>
+
+<h3>Customer List</h3>
+<div id="list"></div>
+
+</div>
+
+<!-- DATE MODAL -->
+<div class="modal" id="dateModal">
+<div class="modal-box">
+<h3>नेपाली मिति</h3>
+
+<select id="year"></select>
+<select id="month"></select>
+<select id="day"></select>
+
+<button onclick="setDate()">OK</button>
+<button onclick="closeDate()">Close</button>
+
+</div>
+</div>
+
+<!-- WELCOME POPUP -->
+<div class="modal" id="welcomeModal">
+<div class="modal-box">
+<h3>श्री गणेशाय नमः</h3>
+<p>Prerak CRM मा स्वागत छ</p>
+<button onclick="closeWelcome()">ठिक छ</button>
+</div>
+</div>
+
+<!-- FOLLOWUP POPUP -->
+<div class="modal" id="followupModal">
+<div class="modal-box">
+<h3>Reminder</h3>
+<p>आज follow-up गर्नुपर्ने customer छन्</p>
+<button onclick="closeFollow()">ठिक छ</button>
+</div>
+</div>
 
 <script>
-function addCustomer() {
-  let name = document.getElementById("name").value;
-  let phone = document.getElementById("phone").value;
 
-  let li = document.createElement("li");
-  li.innerText = name + " - " + phone;
+const months = ["बैशाख","जेठ","असार","श्रावण","भदौ","आश्विन","कार्तिक","मंसिर","पुष","माघ","फागुन","चैत"];
 
-  document.getElementById("list").appendChild(li);
+function nep(num){
+ return num.toString().replace(/\d/g,d=>"०१२३४५६७८९"[d]);
 }
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log("Service Worker Registered"));
+
+// date picker
+function openDatePicker(){
+ document.getElementById("dateModal").style.display="flex";
+
+ let y=document.getElementById("year");
+ let m=document.getElementById("month");
+ let d=document.getElementById("day");
+
+ y.innerHTML=""; m.innerHTML=""; d.innerHTML="";
+
+ for(let i=2080;i<=2090;i++){
+  y.innerHTML+=`<option value="${i}">${nep(i)}</option>`;
+ }
+
+ months.forEach((x,i)=>{
+  m.innerHTML+=`<option value="${i}">${x}</option>`;
+ });
+
+ for(let i=1;i<=32;i++){
+  d.innerHTML+=`<option value="${i}">${nep(i)}</option>`;
+ }
 }
+
+function setDate(){
+ let y=document.getElementById("year").value;
+ let m=document.getElementById("month").value;
+ let d=document.getElementById("day").value;
+
+ document.getElementById("date").value =
+ nep(y)+" "+months[m]+" "+nep(d);
+
+ closeDate();
+}
+
+function closeDate(){
+ document.getElementById("dateModal").style.display="none";
+}
+
+// add customer
+function addCustomer(){
+
+ let c = {
+ name: name.value,
+ phone: phone.value,
+ alt: altPhone.value,
+ address: address.value,
+ product: product.value,
+ location: location.value,
+ date: date.value,
+ status: status.value,
+ remarks: remarks.value
+ };
+
+ if(!c.name || !c.phone){
+  alert("Name र Phone चाहिन्छ");
+  return;
+ }
+
+ let data = JSON.parse(localStorage.getItem("crm")) || [];
+ data.push(c);
+ localStorage.setItem("crm",JSON.stringify(data));
+
+ clearForm();
+ show();
+}
+
+// show list
+function show(){
+ let list=document.getElementById("list");
+ list.innerHTML="";
+
+ let data = JSON.parse(localStorage.getItem("crm")) || [];
+
+ data.forEach((x,i)=>{
+ list.innerHTML+=`
+ <div class="card">
+ <b>${i+1}. ${x.name}</b><br>
+ 📞 ${x.phone}<br>
+ 📍 ${x.location}<br>
+ 📅 ${x.date}<br>
+ 🔄 ${x.status}
+ </div>`;
+ });
+}
+
+// clear
+function clearForm(){
+ name.value="";
+ phone.value="";
+ altPhone.value="";
+ address.value="";
+ product.value="";
+ location.value="";
+ date.value="";
+ remarks.value="";
+}
+
+// welcome popup
+function closeWelcome(){
+ document.getElementById("welcomeModal").style.display="none";
+}
+
+// follow popup
+function closeFollow(){
+ document.getElementById("followupModal").style.display="none";
+}
+
+// load
+window.onload=function(){
+ show();
+
+ // welcome
+ document.getElementById("welcomeModal").style.display="flex";
+
+ // follow-up simple check
+ let data = JSON.parse(localStorage.getItem("crm")) || [];
+ if(data.some(x=>x.status==="Follow-up Pending")){
+  document.getElementById("followupModal").style.display="flex";
+ }
+}
+
 </script>
+
 </body>
 </html>
