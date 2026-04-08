@@ -49,6 +49,13 @@ button {background:#007bff; color:white;}
 <button onclick="addCustomer()">Save Customer</button>
 
 <h3>Rate List</h3>
+ <h3>➕ Add Item</h3>
+
+<input id="itemName" placeholder="Item Name">
+<input id="itemRate" placeholder="Rate">
+<input id="itemStock" placeholder="Stock Quantity">
+
+<button onclick="addItem()">Add Item</button>
 <div id="rateList"></div>
 
 <h3>Customer List</h3>
@@ -168,6 +175,44 @@ list.innerHTML=html;
 
 // show rate list
 function showRates(){
+}
+
+function addItem(){
+let items = JSON.parse(localStorage.getItem("items")) || [];
+
+let item = {
+name: itemName.value,
+rate: itemRate.value,
+stock: itemStock.value
+};
+
+if(!item.name || !item.rate){
+alert("Item Name र Rate चाहिन्छ");
+return;
+}
+
+items.push(item);
+localStorage.setItem("items", JSON.stringify(items));
+
+alert("Item Added");
+showRates();
+}
+
+function showRates(){
+let items = JSON.parse(localStorage.getItem("items")) || [];
+
+let html = "<h3>Rate List</h3>";
+
+items.forEach(i=>{
+html += `<div class="rate-card">
+<b>${i.name}</b><br>
+Rate: Rs. ${i.rate}<br>
+Stock: ${i.stock}
+</div>`;
+});
+
+document.getElementById("list").innerHTML += html;
+} 
 let html="";
 rates.forEach(r=>{
 html+=`
