@@ -6,49 +6,14 @@
 <title>Prerak CRM</title>
 
 <style>
-body {
-  font-family: Arial;
-  background:#f4f6fb;
-  padding:15px;
-}
-.container {
-  max-width:700px;
-  margin:auto;
-  background:white;
-  padding:15px;
-  border-radius:10px;
-}
-input, select, button {
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-button {
-  background:#1d3557;
-  color:white;
-  font-weight:bold;
-}
-.card {
-  border:1px solid #ddd;
-  padding:10px;
-  margin-top:10px;
-  border-radius:8px;
-}
-.modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  justify-content:center;
-  align-items:center;
-}
-.modal-box {
-  background:white;
-  padding:15px;
-  border-radius:10px;
-}
+body {font-family: Arial; background:#f4f6fb; padding:15px;}
+.container {max-width:700px; margin:auto; background:white; padding:15px; border-radius:10px;}
+input,select,button {width:100%; padding:10px; margin-top:8px; border-radius:6px; border:1px solid #ccc;}
+button {background:#007bff; color:white;}
+.card {background:#eef; padding:10px; margin-top:10px; border-radius:8px;}
+.modal {display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;}
+.modal-box {background:white; padding:15px; border-radius:10px;}
+.rate-card {background:#f8f9fa; padding:10px; margin-top:8px; border-radius:8px; border:1px solid #ddd;}
 </style>
 </head>
 
@@ -56,16 +21,16 @@ button {
 
 <div class="container">
 
-<h2>Prerak CRM</h2>
+<h2>🙏 श्री गणेशाय नमः</h2>
 
 <input id="name" placeholder="Customer Name">
-<input id="phone" placeholder="Phone Number">
-<input id="altPhone" placeholder="Alternate Phone">
+<input id="phone" placeholder="Phone">
+<input id="alt" placeholder="Alternate Phone">
 <input id="address" placeholder="Address">
 <input id="product" placeholder="Service / Product">
 <input id="location" placeholder="Project Location">
 
-<input id="date" placeholder="नेपाली मिति छान्नुहोस्" readonly onclick="openDatePicker()">
+<input id="date" placeholder="मिति छान्नुहोस्" readonly onclick="openDate()">
 
 <select id="status">
 <option>New</option>
@@ -74,180 +39,180 @@ button {
 <option>Quotation Sent</option>
 <option>Order Confirmed</option>
 <option>Working</option>
-<option>Ready for Delivery</option>
+<option>Ready</option>
 <option>Completed</option>
 <option>Cancelled</option>
 </select>
 
-<textarea id="remarks" placeholder="Remarks / Notes"></textarea>
+<input id="remarks" placeholder="Remarks">
 
-<button onclick="addCustomer()">Add Customer</button>
+<button onclick="addCustomer()">Save Customer</button>
+
+<h3>Rate List</h3>
+<div id="rateList"></div>
 
 <h3>Customer List</h3>
 <div id="list"></div>
 
 </div>
 
-<!-- DATE MODAL -->
+<!-- DATE PICKER -->
 <div class="modal" id="dateModal">
 <div class="modal-box">
-<h3>नेपाली मिति</h3>
-
 <select id="year"></select>
 <select id="month"></select>
 <select id="day"></select>
-
 <button onclick="setDate()">OK</button>
 <button onclick="closeDate()">Close</button>
-
 </div>
 </div>
 
-<!-- WELCOME POPUP -->
-<div class="modal" id="welcomeModal">
+<!-- WELCOME -->
+<div class="modal" id="welcome">
 <div class="modal-box">
 <h3>श्री गणेशाय नमः</h3>
 <p>Prerak CRM मा स्वागत छ</p>
-<button onclick="closeWelcome()">ठिक छ</button>
+<button onclick="closeWelcome()">OK</button>
 </div>
 </div>
 
-<!-- FOLLOWUP POPUP -->
-<div class="modal" id="followupModal">
+<!-- FOLLOW ALERT -->
+<div class="modal" id="alertBox">
 <div class="modal-box">
-<h3>Reminder</h3>
 <p>आज follow-up गर्नुपर्ने customer छन्</p>
-<button onclick="closeFollow()">ठिक छ</button>
+<button onclick="closeAlert()">OK</button>
 </div>
 </div>
 
 <script>
 
-const months = ["बैशाख","जेठ","असार","श्रावण","भदौ","आश्विन","कार्तिक","मंसिर","पुष","माघ","फागुन","चैत"];
+const months=["बैशाख","जेठ","असार","श्रावण","भदौ","आश्विन","कार्तिक","मंसिर","पुष","माघ","फागुन","चैत"];
 
-function nep(num){
- return num.toString().replace(/\d/g,d=>"०१२३४५६७८९"[d]);
-}
+const rates = [
+ {item:"Gypsum Work", rate:"120", unit:"sqft"},
+ {item:"2x2 Ceiling", rate:"145", unit:"sqft"},
+ {item:"Smart Board / PVC Board", rate:"95", unit:"sqft"},
+ {item:"Parquet Flooring", rate:"180", unit:"sqft"},
+ {item:"Solar Panel", rate:"50000", unit:"set"},
+ {item:"UPVC Window", rate:"850", unit:"sqft"},
+ {item:"Aluminum Work", rate:"750", unit:"sqft"}
+];
 
-// date picker
-function openDatePicker(){
- document.getElementById("dateModal").style.display="flex";
+function nep(n){return n.toString().replace(/\d/g,d=>"०१२३४५६७८९"[d]);}
 
- let y=document.getElementById("year");
- let m=document.getElementById("month");
- let d=document.getElementById("day");
-
- y.innerHTML=""; m.innerHTML=""; d.innerHTML="";
-
- for(let i=2080;i<=2090;i++){
-  y.innerHTML+=`<option value="${i}">${nep(i)}</option>`;
- }
-
- months.forEach((x,i)=>{
-  m.innerHTML+=`<option value="${i}">${x}</option>`;
- });
-
- for(let i=1;i<=32;i++){
-  d.innerHTML+=`<option value="${i}">${nep(i)}</option>`;
- }
+// date
+function openDate(){
+document.getElementById("dateModal").style.display="flex";
+let y=document.getElementById("year"),m=document.getElementById("month"),d=document.getElementById("day");
+y.innerHTML=""; m.innerHTML=""; d.innerHTML="";
+for(let i=2080;i<=2090;i++) y.innerHTML+=`<option>${nep(i)}</option>`;
+months.forEach(x=>m.innerHTML+=`<option>${x}</option>`);
+for(let i=1;i<=32;i++) d.innerHTML+=`<option>${nep(i)}</option>`;
 }
 
 function setDate(){
- let y=document.getElementById("year").value;
- let m=document.getElementById("month").value;
- let d=document.getElementById("day").value;
-
- document.getElementById("date").value =
- nep(y)+" "+months[m]+" "+nep(d);
-
- closeDate();
+let y=year.value,m=month.value,d=day.value;
+document.getElementById("date").value=y+" "+m+" "+d;
+closeDate();
 }
 
-function closeDate(){
- document.getElementById("dateModal").style.display="none";
+function closeDate(){dateModal.style.display="none";}
+
+// data
+let data=JSON.parse(localStorage.getItem("crm"))||[];
+
+function save(){
+localStorage.setItem("crm",JSON.stringify(data));
+show();
 }
 
-// add customer
 function addCustomer(){
-
- let c = {
- name: name.value,
- phone: phone.value,
- alt: altPhone.value,
- address: address.value,
- product: product.value,
- location: location.value,
- date: date.value,
- status: status.value,
- remarks: remarks.value
- };
-
- if(!c.name || !c.phone){
-  alert("Name र Phone चाहिन्छ");
-  return;
- }
-
- let data = JSON.parse(localStorage.getItem("crm")) || [];
- data.push(c);
- localStorage.setItem("crm",JSON.stringify(data));
-
- clearForm();
- show();
+let c={
+name:name.value,
+phone:phone.value,
+alt:alt.value,
+address:address.value,
+product:product.value,
+location:location.value,
+date:date.value,
+status:status.value,
+remarks:remarks.value
+};
+if(!c.name||!c.phone){alert("Name/Phone चाहिन्छ");return;}
+data.push(c);
+save();
+alert("Saved");
 }
 
-// show list
+// show customer list
 function show(){
- let list=document.getElementById("list");
- list.innerHTML="";
+let html="";
+data.forEach((c,i)=>{
+html+=`
+<div class="card">
+<b>${c.name}</b><br>
+📞 ${c.phone}<br>
+📍 ${c.location}<br>
+📅 ${c.date}<br>
+🔄 ${c.status}<br>
+📝 ${c.remarks || ""}<br><br>
 
- let data = JSON.parse(localStorage.getItem("crm")) || [];
+<button onclick="whatsapp(${i})">WhatsApp</button>
+<button onclick="sms(${i})">SMS</button>
+<button onclick="copyMsg(${i})">Copy</button>
 
- data.forEach((x,i)=>{
- list.innerHTML+=`
- <div class="card">
- <b>${i+1}. ${x.name}</b><br>
- 📞 ${x.phone}<br>
- 📍 ${x.location}<br>
- 📅 ${x.date}<br>
- 🔄 ${x.status}
- </div>`;
- });
+</div>`;
+});
+list.innerHTML=html;
 }
 
-// clear
-function clearForm(){
- name.value="";
- phone.value="";
- altPhone.value="";
- address.value="";
- product.value="";
- location.value="";
- date.value="";
- remarks.value="";
+// show rate list
+function showRates(){
+let html="";
+rates.forEach(r=>{
+html+=`
+<div class="rate-card">
+<b>${r.item}</b><br>
+Rate: रु. ${r.rate} / ${r.unit}
+</div>`;
+});
+document.getElementById("rateList").innerHTML=html;
 }
 
-// welcome popup
-function closeWelcome(){
- document.getElementById("welcomeModal").style.display="none";
+// whatsapp
+function whatsapp(i){
+let c=data[i];
+let msg=`नमस्कार ${c.name} जी 🙏\nPrerak Construction बाट।`;
+window.open("https://wa.me/977"+c.phone+"?text="+encodeURIComponent(msg));
 }
 
-// follow popup
-function closeFollow(){
- document.getElementById("followupModal").style.display="none";
+// sms
+function sms(i){
+let c=data[i];
+let msg=`Namaskar ${c.name}`;
+window.location.href="sms:"+c.phone+"?body="+msg;
 }
+
+// copy
+function copyMsg(i){
+let c=data[i];
+let msg=`Namaskar ${c.name}`;
+navigator.clipboard.writeText(msg);
+alert("Copied");
+}
+
+// popup
+function closeWelcome(){welcome.style.display="none";}
+function closeAlert(){alertBox.style.display="none";}
 
 // load
 window.onload=function(){
- show();
-
- // welcome
- document.getElementById("welcomeModal").style.display="flex";
-
- // follow-up simple check
- let data = JSON.parse(localStorage.getItem("crm")) || [];
- if(data.some(x=>x.status==="Follow-up Pending")){
-  document.getElementById("followupModal").style.display="flex";
- }
+show();
+showRates();
+welcome.style.display="flex";
+if(data.some(x=>x.status==="Follow-up Pending")){
+alertBox.style.display="flex";
+}
 }
 
 </script>
