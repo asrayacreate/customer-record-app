@@ -245,6 +245,9 @@ document.getElementById("itemStock").value="";
 
 showRates();
 }
+ window.onload = function(){
+showRates();
+}
  function addItem(){
 let items = JSON.parse(localStorage.getItem("items")) || [];
 
