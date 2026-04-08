@@ -1,144 +1,51 @@
-unction showRates(){
-
-let items = JSON.parse(localStorage.getItem("items")) || [];
-
-let html = "";
-
-items.forEach((item,i)=>{
-html += `
-<div class="card">
-<b>${item.name}</b><br>
-💰 Rs. ${item.rate}<br>
-📦 Stock: ${item.stock}
-</div>
-`;
-});
-
-document.getElementById("rateList").innerHTML = html;
-}
-You sent
-function addItem(){
-
-let items = JSON.parse(localStorage.getItem("items")) || [];
-
-let name = document.getElementById("itemName").value;
-let rate = document.getElementById("itemRate").value;
-let stock = document.getElementById("itemStock").value;
-
-if(!name || !rate){
-alert("Item Name र Rate चाहिन्छ");
-return;
-}
-
-items.push({
-name: name,
-rate: rate,
-stock: stock
-});
-
-localStorage.setItem("items", JSON.stringify(items));
-
-alert("Item Saved Successfully");
-
-document.getElementById("itemName").value="";
-document.getElementById("itemRate").value="";
-document.getElementById("itemStock").value="";
-
-showRates();
-}
-You sent
-window.onload = function(){
-showRates();
-}
-9:07 PM
-You sent
-<div id="rateList"></div>
-You sent
 <!DOCTYPE html>
 <html lang="ne">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prerak CRM</title>
   <style>
-    body {
+    body{
       font-family: Arial, sans-serif;
-      background: #f4f6fb;
-      margin: 0;
-      padding: 20px;
+      background:#f4f6fb;
+      margin:0;
+      padding:20px;
     }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      padding: 18px;
-      border-radius: 12px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    .container{
+      max-width:800px;
+      margin:auto;
+      background:#fff;
+      padding:20px;
+      border-radius:12px;
+      box-shadow:0 4px 18px rgba(0,0,0,.08);
     }
-
-    h2, h3 {
-      margin-top: 0;
+    h2,h3{margin:0 0 10px 0;}
+    input,select,button{
+      width:100%;
+      padding:11px;
+      margin-top:8px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      box-sizing:border-box;
+      font-size:15px;
     }
-
-    input, select, button {
-      width: 100%;
-      padding: 11px;
-      margin-top: 8px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      font-size: 15px;
+    button{
+      background:#0d6efd;
+      color:#fff;
+      border:none;
+      cursor:pointer;
     }
-
-    button {
-      background: #0d6efd;
-      color: white;
-      border: none;
-      cursor: pointer;
+    .card{
+      background:#f8f9fa;
+      border:1px solid #ddd;
+      padding:12px;
+      margin-top:10px;
+      border-radius:10px;
     }
-
-    button:hover {
-      background: #0b5ed7;
-    }
-
-    .card {
-      background: #f8f9fa;
-      border: 1px solid #ddd;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 10px;
-    }
-
-    .section-gap {
-      margin-top: 18px;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    .modal-box {
-      background: white;
-      padding: 16px;
-      border-radius: 12px;
-      width: 320px;
-      max-width: 92%;
-    }
-
-    .small-btn {
-      margin-top: 8px;
-    }
+    .section-gap{margin-top:22px;}
   </style>
 </head>
 <body>
-
   <div class="container">
     <h2>🙏 श्री गणेशाय नमः</h2>
 
@@ -148,8 +55,7 @@ You sent
     <input id="address" placeholder="Address">
     <input id="product" placeholder="Service / Product">
     <input id="location" placeholder="Project Location">
-
-    <input id="date" placeholder="मिति छान्नुहोस्" readonly onclick="openDatePicker()">
+    <input id="date" placeholder="Date / मिति">
 
     <select id="status">
       <option>New</option>
@@ -164,91 +70,24 @@ You sent
     </select>
 
     <input id="remarks" placeholder="Remarks">
-
     <button onclick="addCustomer()">Save Customer</button>
-
-    <div class="section-gap">
-      <h3>Rate List</h3>
-      <h3>➕ Add Item</h3>
-
-      <input id="itemName" placeholder="Item Name">
-      <input id="itemRate" placeholder="Rate">
-      <input id="itemStock" placeholder="Stock Quantity">
-
-      <button onclick="addItem()">Add Item</button>
-
-      <div id="rateList"></div>
-    </div>
 
     <div class="section-gap">
       <h3>Customer List</h3>
       <div id="list"></div>
     </div>
-  </div>
 
-  <!-- Date Picker Modal -->
-  <div class="modal" id="dateModal">
-    <div class="modal-box">
-      <h3>नेपाली मिति छान्नुहोस्</h3>
-      <select id="bsYear"></select>
-      <select id="bsMonth"></select>
-      <select id="bsDay"></select>
-      <button class="small-btn" onclick="setDate()">ठीक छ</button>
-      <button class="small-btn" onclick="closeDatePicker()">Close</button>
+    <div class="section-gap">
+      <h3>Rate List</h3>
+      <input id="itemName" placeholder="Item Name">
+      <input id="itemRate" placeholder="Rate">
+      <input id="itemStock" placeholder="Stock Quantity">
+      <button onclick="addItem()">Add Item</button>
+      <div id="rateList"></div>
     </div>
   </div>
 
   <script>
-    const months = [
-      "बैशाख","जेठ","असार","श्रावण","भदौ","आश्विन",
-      "कार्तिक","मंसिर","पुष","माघ","फागुन","चैत"
-    ];
-
-    function nepaliNumber(num) {
-      const map = ['०','१','२','३','४','५','६','७','८','९'];
-      return num.toString().split('').map(ch => map[ch] ?? ch).join('');
-    }
-
-    function openDatePicker() {
-      const modal = document.getElementById("dateModal");
-      const y = document.getElementById("bsYear");
-      const m = document.getElementById("bsMonth");
-      const d = document.getElementById("bsDay");
-
-      y.innerHTML = "";
-      m.innerHTML = "";
-      d.innerHTML = "";
-
-      for (let i = 2080; i <= 2090; i++) {
-        y.innerHTML += <option value="${i}">${nepaliNumber(i)}</option>;
-      }
-
-      months.forEach((month, idx) => {
-        m.innerHTML += <option value="${idx + 1}">${month}</option>;
-      });
-
-      for (let i = 1; i <= 32; i++) {
-        d.innerHTML += <option value="${i}">${nepaliNumber(i)}</option>;
-      }
-
-      modal.style.display = "flex";
-    }
-
-    function closeDatePicker() {
-      document.getElementById("dateModal").style.display = "none";
-    }
-
-    function setDate() {
-      const y = document.getElementById("bsYear").value;
-      const m = document.getElementById("bsMonth").value;
-      const d = document.getElementById("bsDay").value;
-
-      document.getElementById("date").value =
-        ${nepaliNumber(y)} ${months[parseInt(m) - 1]} ${nepaliNumber(d)};
-
-      closeDatePicker();
-    }
-
     function addCustomer() {
       const customers = JSON.parse(localStorage.getItem("crm")) || [];
 
@@ -265,7 +104,7 @@ You sent
       };
 
       if (!customer.name || !customer.phone) {
-        alert("Customer Name र Phone चाहिन्छ");
+        alert("Name र Phone चाहिन्छ");
         return;
       }
 
@@ -289,8 +128,8 @@ You sent
     function showCustomers() {
       const list = document.getElementById("list");
       const customers = JSON.parse(localStorage.getItem("crm")) || [];
-      let html = "";
 
+      let html = "";
       customers.forEach((c, i) => {
         html += `
           <div class="card">
@@ -298,7 +137,7 @@ You sent
             📞 ${c.phone}<br>
             📍 ${c.location || "-"}<br>
             📅 ${c.date || "-"}<br>
-            🔄 ${c.status}<br>
+            📊 ${c.status}<br>
             📝 ${c.remarks || "-"}
           </div>
         `;
@@ -327,33 +166,25 @@ You sent
       document.getElementById("itemStock").value = "";
 
       showRates();
-      alert("Item Saved Successfully");
+      alert("Item Saved");
     }
 
     function showRates() {
       const rateList = document.getElementById("rateList");
       const items = JSON.parse(localStorage.getItem("items")) || [];
-      let html = "";
 
-      items.forEach((item, i) => {
+      let html = "";
+      items.forEach((item) => {
         html += `
           <div class="card">
             <b>${item.name}</b><br>
-            💰 Rs. ${item.rate}<br>
-            📦 Stock: ${item.stock || "-"}<br>
-            <button class="small-btn" onclick="deleteItem(${i})">Delete</button>
+            Rs. ${item.rate}<br>
+            Stock: ${item.stock || "-"}
           </div>
         `;
       });
 
       rateList.innerHTML = html;
-    }
-
-    function deleteItem(index) {
-      const items = JSON.parse(localStorage.getItem("items")) || [];
-      items.splice(index, 1);
-      localStorage.setItem("items", JSON.stringify(items));
-      showRates();
     }
 
     window.onload = function () {
@@ -361,523 +192,5 @@ You sent
       showRates();
     };
   </script>
-</body>
-</html>
-You sent
-Prerak CRM
-asrayacreate.github.io
-You sent
-<script>
-
-function addItem(){
-  let items = JSON.parse(localStorage.getItem("items")) || [];
-
-  let name = document.getElementById("itemName").value;
-  let rate = document.getElementById("itemRate").value;
-  let stock = document.getElementById("itemStock").value;
-
-  if(!name || !rate){
-    alert("Item Name र Rate चाहिन्छ");
-    return;
-  }
-
-  items.push({ name, rate, stock });
-
-  localStorage.setItem("items", JSON.stringify(items));
-
-  alert("Item Saved Successfully");
-
-  document.getElementById("itemName").value="";
-  document.getElementById("itemRate").value="";
-  document.getElementById("itemStock").value="";
-
-  showRates();
-}
-
-function showRates(){
-  let items = JSON.parse(localStorage.getItem("items")) || [];
-  let html = "";
-
-  items.forEach(item=>{
-    html += `<div>
-      <b>${item.name}</b><br>
-      Rs. ${item.rate}<br>
-      Stock: ${item.stock}
-    </div>`;
-  });
-
-  document.getElementById("rateList").innerHTML = html;
-}
-
-window.onload = function(){
-  showRates();
-}
-
-</script>
-You sent
-<script>
-
-function addItem(){
-  let items = JSON.parse(localStorage.getItem("items")) || [];
-
-  let name = document.getElementById("itemName").value;
-  let rate = document.getElementById("itemRate").value;
-  let stock = document.getElementById("itemStock").value;
-
-  if(!name || !rate){
-    alert("Item Name र Rate चाहिन्छ");
-    return;
-  }
-
-  items.push({ name, rate, stock });
-
-  localStorage.setItem("items", JSON.stringify(items));
-
-  alert("Item Saved Successfully");
-
-  document.getElementById("itemName").value="";
-  document.getElementById("itemRate").value="";
-  document.getElementById("itemStock").value="";
-
-  showRates();
-}
-
-function showRates(){
-  let items = JSON.parse(localStorage.getItem("items")) || [];
-  let html = "";
-
-  items.forEach(item=>{
-    html += `<div>
-      <b>${item.name}</b><br>
-      Rs. ${item.rate}<br>
-      Stock: ${item.stock}
-    </div>`;
-  });
-
-  document.getElementById("rateList").innerHTML = html;
-}
-
-window.onload = function(){
-  showRates();
-}
-
-</script>
-You sent
-<!DOCTYPE html>
-<html lang="ne">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prerak CRM</title>
-  <style>
-    body{font-family:Arial,sans-serif;background:#f4f6fb;margin:0;padding:20px}
-    .container{max-width:800px;margin:auto;background:#fff;padding:18px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
-    h2,h3{margin-top:0}
-    input,select,button{width:100%;padding:11px;margin-top:8px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box;font-size:15px}
-    button{background:#0d6efd;color:#fff;border:none;cursor:pointer}
-    button:hover{background:#0b5ed7}
-    .card{background:#f8f9fa;border:1px solid #ddd;padding:12px;margin-top:10px;border-radius:10px}
-    .section-gap{margin-top:18px}
-    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);justify-content:center;align-items:center;z-index:999}
-    .modal-box{background:#fff;padding:16px;border-radius:12px;width:320px;max-width:92%}
-    .small-btn{margin-top:8px}
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>🙏 श्री गणेशाय नमः</h2>
-
-    <input id="name" placeholder="Customer Name">
-    <input id="phone" placeholder="Phone">
-    <input id="alt" placeholder="Alternate Phone">
-    <input id="address" placeholder="Address">
-    <input id="product" placeholder="Service / Product">
-    <input id="location" placeholder="Project Location">
-    <input id="date" placeholder="मिति छान्नुहोस्" readonly onclick="openDatePicker()">
-
-    <select id="status">
-      <option>New</option>
-      <option>Follow-up Pending</option>
-      <option>Interested</option>
-      <option>Quotation Sent</option>
-      <option>Order Confirmed</option>
-      <option>Working</option>
-      <option>Ready</option>
-      <option>Completed</option>
-      <option>Cancelled</option>
-    </select>
-
-    <input id="remarks" placeholder="Remarks">
-    <button onclick="addCustomer()">Save Customer</button>
-
-    <div class="section-gap">
-      <h3>Rate List</h3>
-      <h3>➕ Add Item</h3>
-      <input id="itemName" placeholder="Item Name">
-      <input id="itemRate" placeholder="Rate">
-      <input id="itemStock" placeholder="Stock Quantity">
-      <button onclick="addItem()">Add Item</button>
-      <div id="rateList"></div>
-    </div>
-
-    <div class="section-gap">
-      <h3>Customer List</h3>
-      <div id="list"></div>
-    </div>
-  </div>
-
-  <div class="modal" id="dateModal">
-    <div class="modal-box">
-      <h3>नेपाली मिति छान्नुहोस्</h3>
-      <select id="bsYear"></select>
-      <select id="bsMonth"></select>
-      <select id="bsDay"></select>
-      <button class="small-btn" onclick="setDate()">ठीक छ</button>
-      <button class="small-btn" onclick="closeDatePicker()">Close</button>
-    </div>
-  </div>
-
-  <script>
-    const months = ["बैशाख","जेठ","असार","श्रावण","भदौ","आश्विन","कार्तिक","मंसिर","पुष","माघ","फागुन","चैत"];
-
-    function nepaliNumber(num){
-      const map=['०','१','२','३','४','५','६','७','८','९'];
-      return num.toString().split('').map(ch => map[ch] ?? ch).join('');
-    }
-
-    function openDatePicker(){
-      const y=document.getElementById("bsYear");
-      const m=document.getElementById("bsMonth");
-      const d=document.getElementById("bsDay");
-      y.innerHTML=""; m.innerHTML=""; d.innerHTML="";
-
-      for(let i=2080;i<=2090;i++){
-        y.innerHTML += <option value="${i}">${nepaliNumber(i)}</option>;
-      }
-      months.forEach((month,idx)=>{
-        m.innerHTML += <option value="${idx+1}">${month}</option>;
-      });
-      for(let i=1;i<=32;i++){
-        d.innerHTML += <option value="${i}">${nepaliNumber(i)}</option>;
-      }
-      document.getElementById("dateModal").style.display="flex";
-    }
-
-    function closeDatePicker(){
-      document.getElementById("dateModal").style.display="none";
-    }
-
-    function setDate(){
-      const y=document.getElementById("bsYear").value;
-      const m=document.getElementById("bsMonth").value;
-      const d=document.getElementById("bsDay").value;
-      document.getElementById("date").value =
-        ${nepaliNumber(y)} ${months[parseInt(m)-1]} ${nepaliNumber(d)};
-      closeDatePicker();
-    }
-
-    function addCustomer(){
-      const customers = JSON.parse(localStorage.getItem("crm")) || [];
-      const customer = {
-        name: document.getElementById("name").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        alt: document.getElementById("alt").value.trim(),
-        address: document.getElementById("address").value.trim(),
-        product: document.getElementById("product").value.trim(),
-        location: document.getElementById("location").value.trim(),
-        date: document.getElementById("date").value.trim(),
-        status: document.getElementById("status").value,
-        remarks: document.getElementById("remarks").value.trim()
-      };
-
-      if(!customer.name || !customer.phone){
-        alert("Customer Name र Phone चाहिन्छ");
-        return;
-      }
-
-      customers.push(customer);
-      localStorage.setItem("crm", JSON.stringify(customers));
-
-      document.getElementById("name").value="";
-      document.getElementById("phone").value="";
-      document.getElementById("alt").value="";
-      document.getElementById("address").value="";
-      document.getElementById("product").value="";
-      document.getElementById("location").value="";
-      document.getElementById("date").value="";
-      document.getElementById("remarks").value="";
-      document.getElementById("status").selectedIndex=0;
-
-      showCustomers();
-      alert("Customer Saved");
-    }
-
-    function showCustomers(){
-      const list=document.getElementById("list");
-      const customers = JSON.parse(localStorage.getItem("crm")) || [];
-      let html="";
-
-      customers.forEach((c,i)=>{
-        html += `
-          <div class="card">
-            <b>${i+1}. ${c.name}</b><br>
-            📞 ${c.phone}<br>
-            📍 ${c.location || "-"}<br>
-            📅 ${c.date || "-"}<br>
-            🔄 ${c.status}<br>
-            📝 ${c.remarks || "-"}
-          </div>
-        `;
-      });
-
-      list.innerHTML = html;
-    }
-
-    function addItem(){
-      const items = JSON.parse(localStorage.getItem("items")) || [];
-      const name = document.getElementById("itemName").value.trim();
-      const rate = document.getElementById("itemRate").value.trim();
-      const stock = document.getElementById("itemStock").value.trim();
-
-      if(!name || !rate){
-        alert("Item Name र Rate चाहिन्छ");
-        return;
-      }
-
-      items.push({ name, rate, stock });
-      localStorage.setItem("items", JSON.stringify(items));
-
-      document.getElementById("itemName").value="";
-      document.getElementById("itemRate").value="";
-      document.getElementById("itemStock").value="";
-
-      showRates();
-      alert("Item Saved Successfully");
-    }
-
-    function showRates(){
-      const rateList=document.getElementById("rateList");
-      const items = JSON.parse(localStorage.getItem("items")) || [];
-      let html="";
-
-      items.forEach((item,i)=>{
-        html += `
-          <div class="card">
-            <b>${item.name}</b><br>
-            💰 Rs. ${item.rate}<br>
-            📦 Stock: ${item.stock || "-"}<br>
-            <button class="small-btn" onclick="deleteItem(${i})">Delete</button>
-          </div>
-        `;
-      });
-
-      rateList.innerHTML = html;
-    }
-
-    function deleteItem(index){
-      const items = JSON.parse(localStorage.getItem("items")) || [];
-      items.splice(index,1);
-      localStorage.setItem("items", JSON.stringify(items));
-      showRates();
-    }
-
-    window.onload = function(){
-      showCustomers();
-      showRates();
-    };
-  </script>
-</body>
-</html>
-10:10 PM
-You sent
-<!DOCTYPE html>
-<html lang="ne">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prerak CRM</title>
-
-<style>
-body {
-  font-family: Arial;
-  background: #f4f6fb;
-  margin: 0;
-  padding: 20px;
-}
-
-.container {
-  max-width: 800px;
-  margin: auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-}
-
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background: #007bff;
-  color: white;
-  border: none;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.card {
-  background: #f1f1f1;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<h2>🙏 श्री गणेशाय नम:</h2>
-
-<input id="name" placeholder="Customer Name">
-<input id="phone" placeholder="Phone">
-<input id="alt" placeholder="Alternate Phone">
-<input id="address" placeholder="Address">
-<input id="product" placeholder="Service / Product">
-<input id="location" placeholder="Project Location">
-<input id="date" placeholder="Date">
-
-<select id="status">
-  <option>New</option>
-  <option>Working</option>
-  <option>Ready</option>
-  <option>Completed</option>
-  <option>Cancelled</option>
-</select>
-
-<input id="remarks" placeholder="Remarks">
-
-<button onclick="addCustomer()">Save Customer</button>
-
-<h3>Customer List</h3>
-<div id="list"></div>
-
-<hr>
-
-<h3>Rate List</h3>
-
-<input id="itemName" placeholder="Item Name">
-<input id="itemRate" placeholder="Rate">
-<input id="itemStock" placeholder="Stock Quantity">
-
-<button onclick="addItem()">Add Item</button>
-
-<div id="rateList"></div>
-
-</div>
-
-<script>
-
-function addCustomer() {
-  let customers = JSON.parse(localStorage.getItem("crm")) || [];
-
-  let customer = {
-    name: document.getElementById("name").value,
-    phone: document.getElementById("phone").value,
-    alt: document.getElementById("alt").value,
-    address: document.getElementById("address").value,
-    product: document.getElementById("product").value,
-    location: document.getElementById("location").value,
-    date: document.getElementById("date").value,
-    status: document.getElementById("status").value,
-    remarks: document.getElementById("remarks").value
-  };
-
-  if (!customer.name || !customer.phone) {
-    alert("Name र Phone चाहिन्छ");
-    return;
-  }
-
-  customers.push(customer);
-  localStorage.setItem("crm", JSON.stringify(customers));
-
-  alert("Customer Saved");
-
-  showCustomers();
-}
-
-function showCustomers() {
-  const list = document.getElementById("list");
-  const customers = JSON.parse(localStorage.getItem("crm")) || [];
-
-  let html = "";
-
-  customers.forEach((c, i) => {
-    html += `
-      <div class="card">
-        <b>${i + 1}. ${c.name}</b><br>
-        📞 ${c.phone}<br>
-        📍 ${c.location || "-"}<br>
-        📅 ${c.date || "-"}<br>
-        📊 ${c.status}<br>
-        📝 ${c.remarks || "-"}
-      </div>
-    `;
-  });
-
-  list.innerHTML = html;
-}
-
-function addItem() {
-  let items = JSON.parse(localStorage.getItem("items")) || [];
-
-  let name = document.getElementById("itemName").value;
-  let rate = document.getElementById("itemRate").value;
-  let stock = document.getElementById("itemStock").value;
-
-  if (!name || !rate) {
-    alert("Item Name र Rate चाहिन्छ");
-    return;
-  }
-
-  items.push({ name, rate, stock });
-  localStorage.setItem("items", JSON.stringify(items));
-
-  alert("Item Saved");
-
-  showRates();
-}
-
-function showRates() {
-  const items = JSON.parse(localStorage.getItem("items")) || [];
-  const div = document.getElementById("rateList");
-
-  let html = "";
-
-  items.forEach(i => {
-    html += `
-      <div class="card">
-        <b>${i.name}</b><br>
-        Rs. ${i.rate}<br>
-        Stock: ${i.stock}
-      </div>
-    `;
-  });
-
-  div.innerHTML = html;
-}
-
-window.onload = function () {
-  showCustomers();
-  showRates();
-};
-
-</script>
-
 </body>
 </html>
