@@ -175,9 +175,80 @@ list.innerHTML=html;
 
 // show rate list
 function showRates(){
+
+let items = JSON.parse(localStorage.getItem("items")) || [];
+
+let html = "";
+
+items.forEach((item,i)=>{
+html += `
+<div class="card">
+<b>${item.name}</b><br>
+💰 Rs. ${item.rate}<br>
+📦 Stock: ${item.stock}
+</div>
+`;
+});
+
+document.getElementById("rateList").innerHTML = html;
 }
+Sent
+Write to
 
 function addItem(){
+ 
+function addItem(){
+
+let items = JSON.parse(localStorage.getItem("items")) || [];
+
+let name = document.getElementById("itemName").value;
+let rate = document.getElementById("itemRate").value;
+let stock = document.getElementById("itemStock").value;
+
+if(!name || !rate){
+alert("Item Name र Rate चाहिन्छ");
+return;
+}
+
+items.push({
+name: name,
+rate: rate,
+stock: stock
+});
+
+localStorage.setItem("items", JSON.stringify(items));
+
+alert("Item Saved Successfully");
+
+document.getElementById("itemName").value="";
+document.getElementById("itemRate").value="";
+document.getElementById("itemStock").value="";
+
+showRates();
+}
+
+if(!name || !rate){
+alert("Item Name र Rate चाहिन्छ");
+return;
+}
+
+items.push({
+name: name,
+rate: rate,
+stock: stock
+});
+
+localStorage.setItem("items", JSON.stringify(items));
+
+alert("Item Saved Successfully");
+
+// clear fields
+document.getElementById("itemName").value="";
+document.getElementById("itemRate").value="";
+document.getElementById("itemStock").value="";
+
+showRates();
+}
  function addItem(){
 let items = JSON.parse(localStorage.getItem("items")) || [];
 
