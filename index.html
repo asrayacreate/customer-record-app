@@ -1,1 +1,618 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prerak CRM Final</title>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:#0f172a;
+      color:#fff;
+    }
+    .app{display:flex;min-height:100vh}
+    .sidebar{
+      width:250px;
+      background:#111827;
+      padding:20px 16px;
+      border-right:1px solid rgba(255,255,255,.08)
+    }
+    .brand{
+      color:#facc15;
+      font-size:28px;
+      font-weight:700;
+      line-height:1.15;
+      margin-bottom:4px
+    }
+    .subbrand{
+      color:#cbd5e1;
+      font-size:13px;
+      margin-bottom:24px
+    }
+    .menu button{
+      width:100%;
+      padding:13px 14px;
+      margin-bottom:10px;
+      border:none;
+      border-radius:12px;
+      background:#1f2937;
+      color:#fff;
+      text-align:left;
+      cursor:pointer;
+      font-size:15px
+    }
+    .menu button.active{
+      background:#374151;
+      border-left:4px solid #facc15
+    }
+    .main{flex:1;padding:22px}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px
+    }
+    .topbar h1{margin:0;font-size:30px}
+    .topbar p{margin:4px 0 0;color:#cbd5e1}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .actions button{
+      border:none;
+      border-radius:10px;
+      padding:12px 16px;
+      cursor:pointer;
+      font-weight:700
+    }
+    .yellow-btn{background:#facc15;color:#111827}
+    .dark-btn{background:#1f2937;color:#fff}
+    .green-btn{background:#16a34a;color:#fff}
+    .blue-btn{background:#2563eb;color:#fff}
+    .danger-btn{
+      background:#dc2626;color:#fff;border:none;padding:8px 10px;
+      border-radius:8px;cursor:pointer
+    }
+    .edit-btn{
+      background:#f59e0b;color:#111827;border:none;padding:8px 10px;
+      border-radius:8px;cursor:pointer;margin-right:6px
+    }
+    .small-btn{
+      background:#334155;color:#fff;border:none;padding:8px 10px;
+      border-radius:8px;cursor:pointer;margin-right:6px;margin-top:8px
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+      margin-bottom:18px
+    }
+    .two-grid{
+      display:grid;
+      grid-template-columns:1.2fr 1fr;
+      gap:16px;
+      margin-bottom:18px
+    }
+    .three-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px
+    }
+    .card{
+      background:#1f2937;
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 4px 14px rgba(0,0,0,.15)
+    }
+    .section-title{font-size:22px;margin:0 0 14px}
+    .stat-title{color:#cbd5e1;font-size:14px;margin-bottom:8px}
+    .stat-value{font-size:34px;font-weight:700}
+    .hidden{display:none}
+    input,select,textarea{
+      width:100%;
+      padding:11px 12px;
+      border-radius:10px;
+      border:1px solid #374151;
+      background:#111827;
+      color:#fff;
+      margin-bottom:10px
+    }
+    textarea{min-height:90px;resize:vertical}
+    input::placeholder,textarea::placeholder{color:#9ca3af}
+    .two-col{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px
+    }
+    .full-btn{
+      width:100%;
+      border:none;
+      border-radius:10px;
+      padding:13px;
+      background:#facc15;
+      color:#111827;
+      font-weight:700;
+      cursor:pointer
+    }
+    .list-card{
+      background:#111827;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      padding:12px;
+      margin-bottom:10px
+    }
+    .muted{color:#cbd5e1}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{
+      padding:10px 8px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      text-align:left;
+      font-size:14px;
+      vertical-align:top
+    }
+    .table th{color:#cbd5e1}
+    .badge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700
+    }
+    .badge-new{background:#0ea5e9;color:#fff}
+    .badge-pending{background:#a855f7;color:#fff}
+    .badge-work{background:#f97316;color:#fff}
+    .badge-done{background:#22c55e;color:#fff}
+    .badge-other{background:#64748b;color:#fff}
+    .badge-overdue{background:#dc2626;color:#fff}
+    .line{height:1px;background:rgba(255,255,255,.08);margin:12px 0}
+    .quote-summary{
+      background:#111827;
+      border:1px solid rgba(255,255,255,.08);
+      padding:12px;
+      border-radius:12px;
+      margin-top:10px
+    }
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      justify-content:center;
+      align-items:center;
+      z-index:9999
+    }
+    .modal-box{
+      background:#1f2937;
+      color:#fff;
+      padding:20px;
+      border-radius:14px;
+      width:360px;
+      max-width:92%
+    }
+    .welcome-box p{color:#cbd5e1}
+    @media (max-width:1000px){
+      .app{display:block}
+      .sidebar{width:100%}
+      .grid,.two-grid,.three-grid,.two-col{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">Prerak Multipurpose</div>
+      <div class="subbrand">CRM COMMAND CENTER</div>
 
+      <div class="menu">
+        <button id="menu-dashboard" class="active" onclick="showSection('dashboard')">Dashboard</button>
+        <button id="menu-customers" onclick="showSection('customers')">Customers</button>
+        <button id="menu-rates" onclick="showSection('rates')">Rate List</button>
+        <button id="menu-quotations" onclick="showSection('quotations')">Quotations</button>
+        <button id="menu-followups" onclick="showSection('followups')">Follow-ups</button>
+        <button id="menu-messages" onclick="showSection('messages')">Messages</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p>Prerak CRM Final</p>
+        </div>
+        <div class="actions">
+          <button class="yellow-btn" onclick="showSection('customers')">+ New Customer</button>
+          <button class="dark-btn" onclick="showSection('rates')">+ New Item</button>
+          <button class="green-btn" onclick="showSection('quotations')">+ New Quotation</button>
+        </div>
+      </div>
+
+      <section id="dashboardSection">
+        <div class="grid">
+          <div class="card">
+            <div class="stat-title">Customers</div>
+            <div class="stat-value" id="customerCount">0</div>
+          </div>
+          <div class="card">
+            <div class="stat-title">Items / Services</div>
+            <div class="stat-value" id="itemCount">0</div>
+          </div>
+          <div class="card">
+            <div class="stat-title">Quotations</div>
+            <div class="stat-value" id="quotationCount">0</div>
+          </div>
+          <div class="card">
+            <div class="stat-title">Follow-up Pending</div>
+            <div class="stat-value" id="pendingCount">0</div>
+          </div>
+        </div>
+
+        <div class="two-grid">
+          <div class="card">
+            <h3 class="section-title">Recent Customers</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Service</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recentCustomers"></tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Service Categories</h3>
+            <div id="serviceSummary" class="muted">No data yet.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="section-title">Today / Overdue Follow-ups</h3>
+          <div id="dashboardFollowups" class="muted">No follow-up data.</div>
+        </div>
+      </section>
+
+      <section id="customersSection" class="hidden">
+        <div class="card">
+          <h3 class="section-title">New / Edit Customer</h3>
+          <input type="hidden" id="customerEditIndex" value="">
+          <input id="name" placeholder="Customer Name">
+          <div class="two-col">
+            <input id="phone" placeholder="Phone">
+            <input id="alt" placeholder="Alternate Phone">
+          </div>
+          <input id="address" placeholder="Address">
+          <div class="two-col">
+            <input id="product" placeholder="Service / Product">
+            <input id="location" placeholder="Project Location">
+          </div>
+          <div class="two-col">
+            <input id="date" placeholder="मिति छान्नुहोस्" readonly onclick="openNepaliDatePicker('date')">
+            <select id="status">
+              <option>New</option>
+              <option>Follow-up Pending</option>
+              <option>Interested</option>
+              <option>Quotation Sent</option>
+              <option>Order Confirmed</option>
+              <option>Working</option>
+              <option>Ready</option>
+              <option>Completed</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
+          <div class="two-col">
+            <input id="followupDate" type="date" placeholder="Follow-up Date">
+            <input id="advancePaid" placeholder="Advance Paid">
+          </div>
+          <textarea id="remarks" placeholder="Remarks"></textarea>
+          <button class="full-btn" onclick="saveCustomer()">Save Customer</button>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <h3 class="section-title">All Customers</h3>
+          <div id="customerCards"></div>
+        </div>
+      </section>
+
+      <section id="ratesSection" class="hidden">
+        <div class="card">
+          <h3 class="section-title">New Item / Rate</h3>
+          <input id="itemName" placeholder="Item Name">
+          <textarea id="itemDescription" placeholder="Full Description"></textarea>
+          <div class="two-col">
+            <input id="itemCategory" placeholder="Category">
+            <input id="itemUnit" placeholder="Unit">
+          </div>
+          <div class="two-col">
+            <input id="itemRate" placeholder="Rate">
+            <input id="itemStock" placeholder="Stock Quantity">
+          </div>
+          <button class="full-btn" onclick="addItem()">Add Item</button>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <h3 class="section-title">Rate List</h3>
+          <div id="rateCards"></div>
+        </div>
+      </section>
+
+      <section id="quotationsSection" class="hidden">
+        <div class="card">
+          <h3 class="section-title">Create Quotation</h3>
+          <input type="hidden" id="quotationEditIndex" value="">
+          <div class="two-col">
+            <select id="quoteCustomer" onchange="fillQuoteCustomerInfo()"></select>
+            <input id="quoteDate" placeholder="मिति छान्नुहोस्" readonly onclick="openNepaliDatePicker('quoteDate')">
+          </div>
+          <div class="two-col">
+            <input id="quotePhone" placeholder="Customer Phone" readonly>
+            <input id="quoteService" placeholder="Service" readonly>
+          </div>
+
+          <div class="line"></div>
+
+          <div class="two-col">
+            <select id="quoteItemSelect"></select>
+            <button class="blue-btn" onclick="addQuotationItemRow()" type="button">Add Selected Item</button>
+          </div>
+
+          <div id="quotationItemsWrap"></div>
+
+          <div class="two-col">
+            <input id="quoteDiscount" placeholder="Discount">
+            <input id="quoteAdvance" placeholder="Advance">
+          </div>
+
+          <div class="quote-summary">
+            <div>Subtotal: Rs. <span id="quoteSubtotal">0</span></div>
+            <div>Discount: Rs. <span id="quoteDiscountView">0</span></div>
+            <div>Advance: Rs. <span id="quoteAdvanceView">0</span></div>
+            <div><b>Total Due: Rs. <span id="quoteTotal">0</span></b></div>
+          </div>
+
+          <textarea id="quoteRemarks" placeholder="Quotation Remarks"></textarea>
+          <button class="full-btn" onclick="saveQuotation()">Save Quotation</button>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <h3 class="section-title">Saved Quotations</h3>
+          <div id="quotationCards"></div>
+        </div>
+      </section>
+
+      <section id="followupsSection" class="hidden">
+        <div class="card">
+          <h3 class="section-title">Follow-up List</h3>
+          <div id="followupCards"></div>
+        </div>
+      </section>
+
+      <section id="messagesSection" class="hidden">
+        <div class="card">
+          <h3 class="section-title">Greeting / SMS / WhatsApp</h3>
+
+          <div class="two-col">
+            <select id="msgCustomerSelect" onchange="fillMessageCustomer()"></select>
+            <select id="messageTemplate" onchange="applyTemplate()">
+              <option value="">Template छान्नुहोस्</option>
+              <option value="greeting">Welcome Greeting</option>
+              <option value="followup">Follow-up Reminder</option>
+              <option value="quotation">Quotation Sent</option>
+              <option value="thanks">Thank You</option>
+              <option value="working">Working Process Update</option>
+              <option value="ready">Ready for Delivery</option>
+              <option value="final">Final Thank You</option>
+            </select>
+          </div>
+
+          <input id="msgPhone" placeholder="Phone" readonly>
+          <textarea id="messageBox" placeholder="Message यहाँ तयार हुन्छ"></textarea>
+
+          <div class="three-grid">
+            <button class="green-btn" onclick="sendWhatsApp()">WhatsApp Send</button>
+            <button class="blue-btn" onclick="sendSMS()">SMS Send</button>
+            <button class="dark-btn" onclick="copyMessage()">Copy Message</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="welcomeModal">
+    <div class="modal-box welcome-box">
+      <h3>श्री गणेशाय नमः</h3>
+      <p>Prerak CRM मा हार्दिक स्वागत छ।</p>
+      <button class="full-btn" onclick="closeWelcome()">ठीक छ</button>
+    </div>
+  </div>
+
+  <div class="modal" id="followupPopup">
+    <div class="modal-box">
+      <h3>Reminder</h3>
+      <div id="followupPopupText" class="muted">आज follow-up गर्नुपर्ने customer छन्।</div>
+      <button class="full-btn" onclick="closeFollowupPopup()">ठीक छ</button>
+    </div>
+  </div>
+
+  <div class="modal" id="nepaliDateModal">
+    <div class="modal-box">
+      <h3 style="margin-top:0;">नेपाली मिति छान्नुहोस्</h3>
+      <select id="npYear"></select>
+      <select id="npMonth"></select>
+      <select id="npDay"></select>
+      <div class="two-col">
+        <button class="full-btn" onclick="applyNepaliDate()">ठीक छ</button>
+        <button class="dark-btn" onclick="closeNepaliDatePicker()" style="width:100%;padding:13px;border:none;border-radius:10px;cursor:pointer;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let activeNepaliDateInput = "";
+
+    const nepaliMonths = [
+      "बैशाख","जेठ","असार","श्रावण","भदौ","आश्विन",
+      "कार्तिक","मंसिर","पुष","माघ","फागुन","चैत"
+    ];
+
+    function toNepaliNum(num) {
+      const map = ['०','१','२','३','४','५','६','७','८','९'];
+      return String(num).split('').map(ch => map[parseInt(ch)] ?? ch).join('');
+    }
+
+    function openNepaliDatePicker(inputId) {
+      activeNepaliDateInput = inputId;
+
+      const year = document.getElementById("npYear");
+      const month = document.getElementById("npMonth");
+      const day = document.getElementById("npDay");
+
+      year.innerHTML = "";
+      month.innerHTML = "";
+      day.innerHTML = "";
+
+      for (let y = 2080; y <= 2095; y++) {
+        year.innerHTML += <option value="${y}">${toNepaliNum(y)}</option>;
+      }
+
+      nepaliMonths.forEach((m, i) => {
+        month.innerHTML += <option value="${i+1}">${m}</option>;
+      });
+
+      for (let d = 1; d <= 32; d++) {
+        day.innerHTML += <option value="${d}">${toNepaliNum(d)}</option>;
+      }
+
+      document.getElementById("nepaliDateModal").style.display = "flex";
+    }
+
+    function closeNepaliDatePicker() {
+      document.getElementById("nepaliDateModal").style.display = "none";
+    }
+
+    function applyNepaliDate() {
+      const y = document.getElementById("npYear").value;
+      const m = document.getElementById("npMonth").value;
+      const d = document.getElementById("npDay").value;
+
+      const finalDate = ${toNepaliNum(y)} ${nepaliMonths[parseInt(m)-1]} ${toNepaliNum(d)};
+
+      if (activeNepaliDateInput) {
+        document.getElementById(activeNepaliDateInput).value = finalDate;
+      }
+
+      closeNepaliDatePicker();
+    }
+
+    function getCustomers() {
+      try { return JSON.parse(localStorage.getItem("crm_customers")) || []; }
+      catch (e) { return []; }
+    }
+
+    function getItems() {
+      try { return JSON.parse(localStorage.getItem("crm_items")) || []; }
+      catch (e) { return []; }
+    }
+
+    function getQuotations() {
+      try { return JSON.parse(localStorage.getItem("crm_quotations")) || []; }
+      catch (e) { return []; }
+    }
+
+    function saveCustomers(data) {
+      localStorage.setItem("crm_customers", JSON.stringify(data));
+    }
+
+    function saveItems(data) {
+      localStorage.setItem("crm_items", JSON.stringify(data));
+    }
+
+    function saveQuotations(data) {
+      localStorage.setItem("crm_quotations", JSON.stringify(data));
+    }
+
+    function safeNum(v) {
+      const n = parseFloat(v);
+      return isNaN(n) ? 0 : n;
+    }
+
+    function todayYMD() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function statusBadge(status) {
+      if (status === "New") return '<span class="badge badge-new">New</span>';
+      if (status === "Follow-up Pending") return '<span class="badge badge-pending">Follow-up Pending</span>';
+      if (status === "Working") return '<span class="badge badge-work">Working</span>';
+      if (status === "Completed" || status === "Ready") return '<span class="badge badge-done">' + status + '</span>';
+      return '<span class="badge badge-other">' + (status || "Other") + '</span>';
+    }
+
+    function showSection(name) {
+      const sections = {
+        dashboard: "dashboardSection",
+        customers: "customersSection",
+        rates: "ratesSection",
+        quotations: "quotationsSection",
+        followups: "followupsSection",
+        messages: "messagesSection"
+      };
+
+      Object.values(sections).forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+
+      document.querySelectorAll(".menu button").forEach(btn => btn.classList.remove("active"));
+
+      document.getElementById(sections[name]).classList.remove("hidden");
+      document.getElementById("menu-" + name).classList.add("active");
+
+      const titles = {
+        dashboard: "Dashboard",
+        customers: "Customers",
+        rates: "Rate List",
+        quotations: "Quotations",
+        followups: "Follow-ups",
+        messages: "Messages"
+      };
+      document.getElementById("pageTitle").textContent = titles[name];
+    }
+
+    function renderDashboard() {
+      const customers = getCustomers();
+      const items = getItems();
+      const quotations = getQuotations();
+
+      document.getElementById("customerCount").textContent = customers.length;
+      document.getElementById("itemCount").textContent = items.length;
+      document.getElementById("quotationCount").textContent = quotations.length;
+      document.getElementById("pendingCount").textContent =
+        customers.filter(c => c.status === "Follow-up Pending").length;
+
+      let recentHtml = "";
+      customers.slice().reverse().slice(0, 5).forEach(c => {
+        recentHtml += `
+          <tr>
+            <td>${c.name || "-"}</td>
+            <td>${c.phone || "-"}</td>
+            <td>${c.product || "-"}</td>
+            <td>${statusBadge(c.status || "New")}</td>
+          </tr>
+        `;
+      });
+      document.getElementById("recentCustomers").innerHTML =
+        recentHtml || <tr><td colspan="4" class="muted">No customers yet.</td></tr>;
+
+      const serviceMap = {};
+      customers.forEach(c => {
+        const key = c.product || "Other";
+        serviceMap[key] = (serviceMap[key] || 0) + 1;
+      });
+      let serviceHtml = "";
+      const entries = Object.entries(serviceMap);
+      if (entries.length === 0) {
+        serviceHtml = "No data
+Sent 1m ago
+Write to
