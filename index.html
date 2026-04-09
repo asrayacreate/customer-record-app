@@ -549,22 +549,24 @@
       if (status === "Completed" || status === "Ready") return '<span class="badge badge-done">' + status + '</span>';
       return '<span class="badge badge-other">' + (status || "Other") + '</span>';
     }
-          
-function showSection(name) {
-    const sections = [
-        "dashboardSection",
-        "customersSection",
-        "ratesSection",
-        "quotationsSection",
-        "followupsSection",
-        "messagesSection"
-    ];
 
-    sections.forEach(id => {
-        document.getElementById(id).style.display = "none";
+  function showSection(name) {
+    const sections = {
+        dashboard: "dashboardSection",
+        customers: "customersSection",
+        rates: "ratesSection",
+        quotations: "quotationsSection",
+        followups: "followupsSection",
+        messages: "messagesSection"
+    };
+
+    // sabai hide
+    Object.values(sections).forEach(id => {
+        document.getElementById(id).classList.add("hidden");
     });
 
-    document.getElementById(name + "Section").style.display = "block";
+    // select gareko show
+    document.getElementById(sections[name]).classList.remove("hidden");
 }
   // sabai hide
   Object.values(sections).forEach(id => {
