@@ -550,24 +550,16 @@
       return '<span class="badge badge-other">' + (status || "Other") + '</span>';
     }
 
-  function showSection(name) {
-    const sections = {
-        dashboard: "dashboardSection",
-        customers: "customersSection",
-        rates: "ratesSection",
-        quotations: "quotationsSection",
-        followups: "followupsSection",
-        messages: "messagesSection"
-    };
-
-    // sabai hide
-    Object.values(sections).forEach(id => {
-        document.getElementById(id).classList.add("hidden");
+    function showSection(name) {
+    document.querySelectorAll('[id$="Section"]').forEach(el => {
+        el.style.display = "none";
     });
 
-    // select gareko show
-    document.getElementById(sections[name]).classList.remove("hidden");
+    const target = document.getElementById(name + "Section");
+    if (target) target.style.display = "block";
 }
+
+   
   // sabai hide
   Object.values(sections).forEach(id => {
     document.getElementById(id).style.display = "none";
