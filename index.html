@@ -551,23 +551,21 @@
     }
           
 function showSection(name) {
-  function showSection(name) {
-    const sections = {
-        dashboard: "dashboardSection",
-        customers: "customersSection",
-        rates: "ratesSection",
-        quotations: "quotationsSection",
-        followups: "followupsSection",
-        messages: "messagesSection"
-    };
+    const sections = [
+        "dashboardSection",
+        "customersSection",
+        "ratesSection",
+        "quotationsSection",
+        "followupsSection",
+        "messagesSection"
+    ];
 
-    Object.values(sections).forEach(id => {
-        document.getElementById(id).classList.add("hidden");
+    sections.forEach(id => {
+        document.getElementById(id).style.display = "none";
     });
 
-    document.getElementById(sections[name]).classList.remove("hidden");
+    document.getElementById(name + "Section").style.display = "block";
 }
-
   // sabai hide
   Object.values(sections).forEach(id => {
     document.getElementById(id).style.display = "none";
