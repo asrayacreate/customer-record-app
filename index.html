@@ -549,8 +549,36 @@
       if (status === "Completed" || status === "Ready") return '<span class="badge badge-done">' + status + '</span>';
       return '<span class="badge badge-other">' + (status || "Other") + '</span>';
     }
+          
+function showSection(name) {
 
-      function showSection(section) {
+  const sections = {
+    dashboard: "dashboardSection",
+    customers: "customersSection",
+    rates: "ratesSection",
+    quotations: "quotationsSection",
+    followups: "followupsSection",
+    messages: "messagesSection"
+  };
+
+  // sabai hide
+  Object.values(sections).forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+
+  // select gareko show
+  document.getElementById(sections[name]).style.display = "block";
+}
+ 
+
+  // sabai hide
+  Object.values(sections).forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+
+  // select gareko show
+  document.getElementById(sections[name]).style.display = "block";
+}
 
   const all = [
     "dashboardSection",
