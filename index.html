@@ -550,7 +550,23 @@
       return '<span class="badge badge-other">' + (status || "Other") + '</span>';
     }
 
-    function showSection(name) {
+      function showSection(section) {
+
+  const all = [
+    "dashboardSection",
+    "customersSection",
+    "ratesSection",
+    "quotationsSection",
+    "followupsSection",
+    "messagesSection"
+  ];
+
+  all.forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+
+  document.getElementById(section).style.display = "block";
+}
       const sections = {
         dashboard: "dashboardSection",
         customers: "customersSection",
