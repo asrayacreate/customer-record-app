@@ -551,15 +551,25 @@
     }
           
 function showSection(name) {
-
-  const sections = {
+const sections = {
     dashboard: "dashboardSection",
     customers: "customersSection",
     rates: "ratesSection",
     quotations: "quotationsSection",
     followups: "followupsSection",
     messages: "messagesSection"
-  };
+};
+
+// sabai hide
+Object.values(sections).forEach(id => {
+    document.getElementById(id).style.display = "none";
+});
+
+// select gareko show
+document.getElementById(sections[name]).style.display = "block";
+Sent
+Write to
+
 
   // sabai hide
   Object.values(sections).forEach(id => {
@@ -570,11 +580,6 @@ function showSection(name) {
   document.getElementById(sections[name]).style.display = "block";
 }
  
-
-  // sabai hide
-  Object.values(sections).forEach(id => {
-    document.getElementById(id).style.display = "none";
-  });
 
   // select gareko show
   document.getElementById(sections[name]).style.display = "block";
