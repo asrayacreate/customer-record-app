@@ -551,14 +551,23 @@
     }
           
 function showSection(name) {
-const sections = {
-    dashboard: "dashboardSection",
-    customers: "customersSection",
-    rates: "ratesSection",
-    quotations: "quotationsSection",
-    followups: "followupsSection",
-    messages: "messagesSection"
-};
+  function showSection(name) {
+    const sections = {
+        dashboard: "dashboardSection",
+        customers: "customersSection",
+        rates: "ratesSection",
+        quotations: "quotationsSection",
+        followups: "followupsSection",
+        messages: "messagesSection"
+    };
+
+    Object.values(sections).forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+    });
+
+    document.getElementById(sections[name]).classList.remove("hidden");
+}
+
 
 // sabai hide
 Object.values(sections).forEach(id => {
